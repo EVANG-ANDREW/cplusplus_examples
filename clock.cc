@@ -1,4 +1,4 @@
-#include<iostream>
+#include <iostream>
 #include<string>
 using namespace std;
 
@@ -11,7 +11,11 @@ class Time{
 		}
 
 		void displayTime(void){
-			cout<<hours<<":"<<mins<<":"<<secs<<ampm<<"\n";
+         cout<<hours<<":"<<mins<<":"<<secs<<ampm<<" 12 hour clock system.\n";			
+		}
+		
+		void displayTime_12/24Hours(void){
+			cout<<hours<<":"<<mins<<":"<<secs<<"  24 Hour clock system.\n";
 		}
 
 	protected:	int hours;
@@ -37,7 +41,8 @@ class Clock: public Time{
 
 int main(){
 	Clock clk;
-	clk.setTime(13,25,40);
+	clk.setTime(18,30,40);
+	clk.displayTime_12/24Hours();
 	clk.setAMPM();
 	clk.displayTime();
 	return 0;
