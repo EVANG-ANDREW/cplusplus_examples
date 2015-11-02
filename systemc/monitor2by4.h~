@@ -1,0 +1,25 @@
+//monitor module
+#include <iostream>
+#include<systemc>
+
+using namespace std;
+
+SC_MODULE(monitor)
+{
+ sc_in<bool> in_1,in_2,out_1,out_2,out_3,out_4;
+ 
+  SC_CTOR(monitor)
+   {
+     SC_METHOD(monitoring);
+     sensitive<< out_1<< out_2<<out_3<< out_4;  //setting the sensitivity
+     dont_initialize();
+     
+    }
+    
+     void monitoring(void)
+  {
+   cout<<"At "<<sc_time_stamp()<<" inputs are "<<in_1<<" and "<<in_2<<" the outputs are "<<out_1<<", "<<out_2<<", "<<out_3<<", "<<out_4<<endl;
+   }
+
+};
+

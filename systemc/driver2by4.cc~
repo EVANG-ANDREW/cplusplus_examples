@@ -1,0 +1,55 @@
+#include "driver2by4.h"
+#include "decoder2by4.h"
+#include "monitor2by4.h"
+#include <systemc.h>
+
+int sc_main(int argc, char *argv[])
+{
+ sc_signal<bool> in_1, in_2, out_1, out_2, out_3, out_4;  //signals to connect different modules
+
+ decoder THEDecode("decoder_instance");
+ driver THEDriver("driver"); 
+ monitor THEMonitor("monitor");
+ 
+ 
+ //inputs format: module instance.port(assign signal 2 port)
+ THEDriver.dout0(in_1);
+ THEDriver.dout1(in_2);
+ THEMonitor.mdi0(in_1);  //monitor for inputs
+ THEMonitor.mdi1(in_2);
+ THEDecode.i0(in_1);
+ THEDecode.i1(in_2);
+ 
+ // outputs format: module instance at declaired port
+ THEDecode.d0(out_1);
+ THEDecode.d1(out_2);
+ THEDecode.d2(out_3);
+ THEDecode.d3(out_4);
+ THEMonitor.mdo0(out_1);  
+ THEMonitor.mdo1(out_2);
+ THEMonitor.mdo2(out_3);
+ THEMonitor.mdo3(out_4);
+
+// trace file Creation
+sc_trace_file *tf;
+tf= sc_create_vcd_trace_file("timing_diagram"); //sets the name of the file
+tf->set_time_unit(1, SC_NS);
+
+//modules for trace & signals interconnecting
+sc_trace(tf, in_a, "binary_input_one"); // signals to be traced
+sc_trace(tf, in_b, "binary_input_two");  //label of the 'axes'
+sc_trace(tf, out_d, "input_is_three");
+sc_trace(tf, out_c, "input_is_two");
+sc_trace(tf, out_b, "input_is_one");
+sc_trace(tf, out_a, "input_is_zero"); 
+
+
+//run a simulation for 70 systemc nano-seconds
+if( !sc_pending_activity() )
+sc_start(75,SC_NS);
+//close the trace file
+sc_close_vcd_trace_file(tf);
+ 
+ return 0;
+ }
+
